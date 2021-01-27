@@ -1,6 +1,8 @@
 package org.launchcode.techjobs.console;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -20,6 +22,7 @@ public class TechJobs {
         columnChoices.put("location", "Location");
         columnChoices.put("position type", "Position Type");
         columnChoices.put("all", "All");
+        ArrayList<String> alphaItems = new ArrayList<>();
 
         // Top-level menu options
         HashMap<String, String> actionChoices = new HashMap<>();
@@ -47,7 +50,12 @@ public class TechJobs {
 
                     // Print list of skills, employers, etc
                     for (String item : results) {
-                        System.out.println(item);
+                        alphaItems.add(item);
+
+                    }
+                    Collections.sort(alphaItems);
+                    for (String alphaItem : alphaItems){
+                        System.out.println(alphaItem);
                     }
                 }
 
@@ -61,9 +69,9 @@ public class TechJobs {
                 String searchTerm = in.nextLine();
 
                 if (searchField.equals("all")) {
-                    System.out.println("Search all fields not yet implemented.");
+                    printJobs(JobData.findByValue(searchTerm));
                 } else {
-                    printJobs(JobData.findByColumnAndValue(searchField, searchTerm));
+                        printJobs(JobData.findByColumnAndValue(searchField, searchTerm));
                 }
             }
         }
@@ -110,7 +118,16 @@ public class TechJobs {
 
     // Print a list of jobs
     private static void printJobs(ArrayList<HashMap<String, String>> someJobs) {
+        if (someJobs.isEmpty()){
+            System.out.println("There is no result returned from your Search");
+        }
+        for(HashMap<String,String> job : someJobs) {
 
-        System.out.println("printJobs is not implemented yet");
+            System.out.println("*****");
+            for(String key : job.keySet()){
+                    System.out.println(key + ": " + job.get(key));
+            }
+        }
+
     }
 }
